@@ -26,10 +26,12 @@ if [ -z "$CYCLE" ] || [ "$CYCLE" = "null" ]; then
     exit 1
 fi
 
-if [ -f "$STATEFILE" ] && /usr/bin/grep -qx "$CYCLE" "$STATEFILE"; then
-    /usr/bin/echo "Cycle $CYCLE already paid, exiting."
-    /usr/bin/rm -f "$TMP"
-    exit 0
+if [ "$DRYRUN" != "--dry-run" ]; then
+    if [ -f "$STATEFILE" ] && /usr/bin/grep -qx "$CYCLE" "$STATEFILE"; then
+        /usr/bin/echo "Cycle $CYCLE already paid, exiting."
+        /usr/bin/rm -f "$TMP"
+        exit 0
+    fi
 fi
 
 /usr/bin/echo "Preparing payouts for cycle $CYCLE"
