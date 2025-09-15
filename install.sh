@@ -30,17 +30,17 @@ fi
 echo "Installing required packages..."
 if command -v apt-get >/dev/null 2>&1; then
   export DEBIAN_FRONTEND=noninteractive
-  apt-get update
-  apt-get install -y curl jq bc awk
+  apt update
+  apt install -y curl jq bc
   # Try to install octez-client (Tezos client). Package name may vary.
   if ! command -v octez-client >/dev/null 2>&1; then
     echo "Attempting to install octez-client from official repository..."
     # Best-effort: try common package name, otherwise skip and warn.
-    apt-get install -y octez-client || true
+    apt install -y octez-client || true
   fi
 else
   echo "Automatic package installation supported only for Debian/Ubuntu (apt)."
-  echo "Please install: curl, jq, bc, awk, and octez-client manually."
+  echo "Please install: curl, jq, bc, and octez-client manually."
 fi
 
 # Create destination dir and set ownership/permissions
