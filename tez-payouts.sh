@@ -4,10 +4,11 @@ set -euo pipefail
 # -------------------------------
 # CONFIG
 # -------------------------------
-BAKER="tz1eo3APJNdYst3mu7axpyZsJBPEqwxm8Sv1"
-PAYOUT="tz1Lz19xKSsczwGGZw7VkVkrN1x3xYZyGfts"
-NODE="http://127.0.0.1:8732"
-API="https://api.mainnet.tzkt.io/v1"
+DRYRUN="--dry-run" # set to "--dry-run" for testing or set to "" for real payouts
+BAKER="tz1eo3APJNdYst3mu7axpyZsJBPEqwxm8Sv1" # Baker address
+PAYOUT="tz1Lz19xKSsczwGGZw7VkVkrN1x3xYZyGfts" # Payout address (if payouts come directly from the baker you can set this as "$BAKER"
+NODE="http://127.0.0.1:8732" # Tezos node RPC to send the transactions to
+API="https://api.mainnet.tzkt.io/v1" # TZKT api (for testnet you can use "https://api.ghostnet.tzkt.io/v1")
 
 STATEFILE="/var/lib/tezos/payout_state"   # track last paid cycle
 FEE_PERCENT=20                            # 20% baker fee
@@ -90,9 +91,9 @@ done
 /usr/bin/cat "$TMP"
 
 # -------------------------------
-# EXECUTE BATCH (DRY-RUN)
+# EXECUTE BATCH (Or DRY-RUN if enabled in the config above)
 # -------------------------------
-/usr/bin/octez-client --endpoint $NODE -R 'http://localhost:6732' multiple transfers from $PAYOUT using "$TMP"
+/usr/bin/octez-client --endpoint $NODE -R 'http://localhost:6732' multiple transfers from $PAYOUT using "$TMP" $DRYRUN
 
 # -------------------------------
 # SAVE STATE
