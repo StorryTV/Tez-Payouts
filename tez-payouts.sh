@@ -100,6 +100,8 @@ done
 # -------------------------------
 # SAVE STATE
 # -------------------------------
-/usr/bin/echo "$CYCLE" > "$STATEFILE"
+if [ "$DRYRUN" != "--dry-run" ]; then
+    /usr/bin/echo "$CYCLE" > "$STATEFILE"
+fi
 
 /usr/bin/rm -f "$TMP"
