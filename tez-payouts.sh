@@ -14,7 +14,7 @@ STATEFILE="/var/lib/tezos/payout_state"   # track last paid cycle
 FEE_PERCENT=20                            # 20% baker fee
 MIN_BAL=100000000                         # 100 tez in mutez
 
-TMP=$(mktemp)
+TMP=$(/usr/bin/mktemp)
 
 # -------------------------------
 # FETCH LAST COMPLETED CYCLE
