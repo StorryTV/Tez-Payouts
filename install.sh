@@ -46,14 +46,14 @@ fi
 # Create destination dir and set ownership/permissions
 echo "Preparing $DEST_DIR..."
 mkdir -p "$DEST_DIR"
-chown root:"$TEZOS_USER" "$DEST_DIR"
+chown "$TEZOS_USER":"$TEZOS_USER" "$DEST_DIR"
 chmod 750 "$DEST_DIR"
 
 # Download the script
 echo "Downloading payout script to $DEST_PATH..."
 curl -fsSL "$SCRIPT_URL" -o "$DEST_PATH" || err "Failed to download script."
 chmod 750 "$DEST_PATH"
-chown root:"$TEZOS_USER" "$DEST_PATH"
+chown "$TEZOS_USER":"$TEZOS_USER" "$DEST_PATH"
 
 # Ensure state dir exists and owned by tezos
 STATE_DIR='/var/lib/tezos'
@@ -82,7 +82,7 @@ fi
 # Ensure log file exists and is writable by owner root and group tezos for append by cron
 LOGFILE='/var/log/tez-payouts.log'
 touch "$LOGFILE"
-chown root:"$TEZOS_USER" "$LOGFILE"
+chown "$TEZOS_USER":"$TEZOS_USER" "$LOGFILE"
 chmod 640 "$LOGFILE"
 
 echo "Install complete."
