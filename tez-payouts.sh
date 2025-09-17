@@ -27,9 +27,9 @@ if [ -z "$CYCLE" ] || [ "$CYCLE" = "null" ]; then
     exit 1
 fi
 
-if [ "$DRYRUN" != "--dry-run" ]; then
-    if [ -f "$STATEFILE" ] && /usr/bin/grep -qx "$CYCLE" "$STATEFILE"; then
-        /usr/bin/echo "Cycle $CYCLE already paid, exiting."
+if [ -f "$STATEFILE" ] && /usr/bin/grep -qx "$CYCLE" "$STATEFILE"; then
+    /usr/bin/echo "Cycle $CYCLE already paid, exiting."
+    if [ "$DRYRUN" != "--dry-run" ]; then
         /usr/bin/rm -f "$TMP"
         exit 0
     fi
