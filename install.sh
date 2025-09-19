@@ -28,7 +28,7 @@ fi
 
 # Install packages (Debian/Ubuntu)
 echo "Installing required packages..."
-if command -v apt-get >/dev/null 2>&1; then
+if command -v apt >/dev/null 2>&1; then
   export DEBIAN_FRONTEND=noninteractive
   apt update
   apt install -y curl jq bc
@@ -79,7 +79,7 @@ else
   echo "$CRONLINE" | crontab -u "$TEZOS_USER" -
 fi
 
-# Ensure log file exists and is writable by owner root and group tezos for append by cron
+# Ensure log file exists and is writable by owner tezos and group tezos for append by cron
 LOGFILE='/var/log/tez-payouts.log'
 touch "$LOGFILE"
 chown "$TEZOS_USER":"$TEZOS_USER" "$LOGFILE"
