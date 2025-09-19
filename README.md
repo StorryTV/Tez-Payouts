@@ -18,6 +18,10 @@ Or get a realtime stream of the log using:
 tail /var/log/tez-payouts.log -f
 ```
 
+The script runs in testing mode by default (--dry-run). Before running the script please change the config:
+```
+nano /var/lib/tezos/tez-payouts.sh
+```
 ----------
 
 Or just download the latest tez-payouts.sh script if you already have everything setup or know what you're doing from the following url: https://raw.githubusercontent.com/StorryTV/Tez-Payouts/refs/heads/main/tez-payouts.sh
