@@ -18,9 +18,9 @@ Or get a realtime stream of the log using:
 tail /var/log/tez-payouts.log -f
 ```
 
-The script runs in testing mode by default (--dry-run). Before running the script please change the config:
+The script runs in testing mode by default (--dry-run). Before running the script please change the config with your baker/payout address, minimum delegation, etc.:
 ```
-nano /var/lib/tezos/tez-payouts.sh
+nano /var/tezos/tez-payouts.sh
 ```
 ----------
 
