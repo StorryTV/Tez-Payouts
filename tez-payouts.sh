@@ -109,3 +109,5 @@ if [ "$DRYRUN" != "--dry-run" ]; then
 fi
 
 /usr/bin/rm -f "$TMP"
+
+exit 0
