@@ -51,7 +51,7 @@ fi
 
 NET_REWARDS=$(/usr/bin/echo "$TOTAL_REWARDS * (100 - $FEE_PERCENT) / 100" | /usr/bin/bc)
 
-TOTAL_BAL=$(/usr/bin/echo "$SPLIT" | jq -r '.externalDelegatedBalance')
+TOTAL_BAL=$(/usr/bin/echo "$SPLIT" | jq -r '(.ownDelegatedBalance + .externalDelegatedBalance)')
 
 /usr/bin/echo "Total rewards before fee: $TOTAL_REWARDS mutez"
 /usr/bin/echo "Total rewards after $FEE_PERCENT% fee: $NET_REWARDS mutez"
