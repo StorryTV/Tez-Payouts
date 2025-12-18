@@ -42,7 +42,7 @@ fi
 # -------------------------------
 SPLIT=$(/usr/bin/curl -s "$API/rewards/split/$BAKER/$CYCLE")
 
-TOTAL_REWARDS=$(/usr/bin/echo "$SPLIT" | /usr/bin/jq -r '(.attestationRewardsDelegated + .dalAttestationRewardsDelegated +.blockRewardsDelegated) // 0')
+TOTAL_REWARDS=$(/usr/bin/echo "$SPLIT" | /usr/bin/jq -r '(.dalAttestationRewardsDelegated + .blockRewardsDelegated + .endorsementRewardsDelegated + .vdfRevelationRewardsDelegated + .nonceRevelationRewardsDelegated + .blockFees + .doubleBakingRewards + .doubleConsensusRewards - .doubleBakingLostUnstaked - .doubleBakingLostExternalUnstaked - .doubleConsensusLostUnstaked - .doubleConsensusLostExternalUnstaked - .nonceRevelationLosses) // 0')
 if [ -z "$TOTAL_REWARDS" ] || [ "$TOTAL_REWARDS" = "null" ] || [ "$TOTAL_REWARDS" -eq 0 ]; then
     /usr/bin/echo "No rewards found for cycle $CYCLE. Exiting."
     /usr/bin/rm -f "$TMP"
@@ -67,13 +67,13 @@ FIRST=1
     ADDR=$(/usr/bin/echo "$DELEGATOR" | /usr/bin/jq -r '.address')
     BAL=$(/usr/bin/echo "$DELEGATOR" | /usr/bin/jq -r '.delegatedBalance')
 
-    # eligibility check: must have >= 100 tez and not be payout address
+    ## eligibility check: must have >= 100 tez and not be payout address
     if [ "$BAL" -ge "$MIN_BAL" ] && [ "$ADDR" != "$PAYOUT" ]; then
         # proportional share
         SHARE=$(/usr/bin/echo "scale=12; $BAL / $TOTAL_BAL" | /usr/bin/bc -l)
 
         # reward in mutez
-        AMOUNT_MUTEZ=$(/usr/bin/echo "$NET_REWARDS * $SHARE - 750" | /usr/bin/bc -l | /usr/bin/cut -d'.' -f1)
+        AMOUNT_MUTEZ=$(/usr/bin/echo "((($TOTAL_REWARDS * $SHARE) / 100) * (100 - $FEE_PERCENT)) - 750" | /usr/bin/bc -l | /usr/bin/cut -d'.' -f1)
 
         # convert to tez with 6 decimals, always leading 0
         AMOUNT_TEZ=$(/usr/bin/echo "scale=6; $AMOUNT_MUTEZ / 1000000" | /usr/bin/bc -l | /usr/bin/awk '{printf "%0.6f", $0}')
