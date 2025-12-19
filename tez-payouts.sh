@@ -14,6 +14,7 @@ API="https://api.mainnet.tzkt.io/v1" # TZKT api (for testnet you can use "https:
 STATEFILE="/var/lib/tezos/payout_state"   # track last paid cycle
 FEE_PERCENT=20                            # 20% baker fee
 MIN_BAL=100000000                         # 100 tez in mutez
+TX_FEE=500                                # transaction fee per delegator (set to 0 if the baker has to pay the transaction fee or an integer in mutez if this amount has to be deducted from the payout)
 
 TMP=$(/usr/bin/mktemp)
 
@@ -73,7 +74,7 @@ FIRST=1
         SHARE=$(/usr/bin/echo "scale=12; $BAL / $TOTAL_BAL" | /usr/bin/bc -l)
 
         # reward in mutez
-        AMOUNT_MUTEZ=$(/usr/bin/echo "((($TOTAL_REWARDS * $SHARE) / 100) * (100 - $FEE_PERCENT)) - 750" | /usr/bin/bc -l | /usr/bin/cut -d'.' -f1)
+        AMOUNT_MUTEZ=$(/usr/bin/echo "((($TOTAL_REWARDS * $SHARE) / 100) * (100 - $FEE_PERCENT)) - $TX_FEE" | /usr/bin/bc -l | /usr/bin/cut -d'.' -f1)
 
         # convert to tez with 6 decimals, always leading 0
         AMOUNT_TEZ=$(/usr/bin/echo "scale=6; $AMOUNT_MUTEZ / 1000000" | /usr/bin/bc -l | /usr/bin/awk '{printf "%0.6f", $0}')
